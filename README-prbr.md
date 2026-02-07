@@ -1,10 +1,14 @@
-# SeedCTL
+<p align="center">
+  <img src=".github/assets/seedctl.png" alt="SeedCTL" width="200"/>
+</p>
+
+[![Build and Release (Linux & Windows)](https://github.com/williamcanin/seedctl/actions/workflows/release.yml/badge.svg)](https://github.com/williamcanin/seedctl/actions/workflows/release.yml)
 
 🇺🇸 [**Read in English**](README-en.md)
 
-Gerador de carteiras Bitcoin **determinístico, auditável e focado em segurança**, escrito em [**Rust**](https://rust-lang.org/).
+**SeedCTL** é um gerador de carteiras Bitcoin **determinístico, auditável e focado em segurança**, escrito em [**Rust**](https://rust-lang.org/).
 
-Este programa permite gerar uma carteira Bitcoin a partir de **dados físicos (dados/dice)** e/ou **entropia do sistema**, produzindo:
+Este programa permite gerar uma carteira Bitcoin a partir de **dados físicos (dado/dice) 🎲** e/ou **entropia do sistema**, produzindo:
 
 - Mnemonic BIP39 (12 ou 24 palavras)
 - Suporte a **passphrase opcional**
@@ -17,7 +21,7 @@ O objetivo principal é permitir **geração segura, verificável e offline** de
 
 ---
 
-## 🔐 Filosofia de Segurança
+## Filosofia de Segurança
 
 - Nenhuma dependência de rede
 - Nenhum envio de dados
@@ -26,42 +30,42 @@ O objetivo principal é permitir **geração segura, verificável e offline** de
 - Compatível com verificação manual (dice, word indexes, derivation path)
 - Separação clara entre **modo determinístico** e **modo híbrido**
 
-> ⚠️ **ATENÇÃO**
+> **ATENÇÃO**
 > Este programa **exibe informações sensíveis** (mnemonic, passphrase, chaves).
 > Utilize **somente em ambiente seguro e offline**. Recomendável usar com [Tails](https://tails.net/)
 
 ---
 
-## ✨ Funcionalidades
+## Funcionalidades
 
-- ✅ BIP39 – 12 ou 24 palavras
-- 🎲 Entropia via dados físicos (1–6)
-- 🔀 Entropia híbrida (dados físicos + RNG do sistema)
-- 🔁 Geração automática ou entrada manual de dados
-- 🔍 Confirmação visual da sequência de dados
-- 🔐 Passphrase opcional (BIP39)
-- 🌐 Mainnet e Testnet
-- 🧭 BIP84 (Native SegWit)
-- 📇 Exibição dos **Word Indexes** (base 1, formato `0001`)
-- 🏷️ Geração de endereços `bc1` / `tb1`
+- BIP39 – 12 ou 24 palavras
+- Entropia via dados físicos (1–6)
+- Entropia híbrida (dados físicos + RNG do sistema)
+- Geração automática ou entrada manual de dados
+- Confirmação visual da sequência de dados
+- Passphrase opcional (BIP39)
+- Mainnet e Testnet
+- BIP84 (Native SegWit)
+- Exibição dos **Word Indexes** (base 1, formato `0001`)
+- Geração de endereços `bc1` / `tb1`
 
 ---
 
-## 📚 Documentação
+## Documentação
 
-- 🔎 **Reprodução determinística de carteiras**
+- **Reprodução determinística de carteiras**
   Veja [`REPRODUCIBILITY.md`](REPRODUCIBILITY.md)
 
-- 🔐 **Verificação de binários e releases (SHA256 + GPG)**
+- **Verificação de binários e releases (SHA256 + GPG)**
   Veja [`VERIFYING_RELEASES.md`](VERIFYING_RELEASES.md)
 
 ---
 
-## 🎲 Modos de Entropia
+## Modos de Entropia
 
 O programa oferece **dois modos distintos**, com objetivos diferentes.
 
-### 1️⃣ Modo Manual (Determinístico)
+### Modo Manual (Determinístico)
 
 Indicado para:
 
@@ -82,11 +86,11 @@ Indicado para:
 entropy = SHA256(dice_entropy)
 ```
 
-📌 Este modo é **100% determinístico e reproduzível**.
+Este modo é **100% determinístico e reproduzível**.
 
 ---
 
-### 2️⃣ Modo Automático (Híbrido)
+### Modo Automático (Híbrido)
 
 Indicado para:
 
@@ -97,8 +101,8 @@ Indicado para:
 **Como funciona:**
 
 - O programa gera automaticamente:
-  - 🎲 Dados físicos aleatórios (1–6)
-  - 🔐 Entropia segura do sistema (CSPRNG)
+  - Dados físicos aleatórios (1–6)
+  - Entropia segura do sistema (CSPRNG)
 - As duas fontes são combinadas e hashadas
 
 **Modelo conceitual:**
@@ -111,13 +115,13 @@ entropy_final = SHA256(dice_entropy || hex_entropy)
 ✔ Não depende exclusivamente do humano
 ✔ Não depende exclusivamente do sistema
 
-⚠️ **Importante:**
+**Importante:**
 Este modo **não é reproduzível** se apenas o dice for anotado.
 Para reprodução futura, o modo manual deve ser utilizado.
 
 ---
 
-## 📇 Word Indexes (BIP39)
+## Word Indexes (BIP39)
 
 Cada palavra do mnemonic é acompanhada de seu índice na wordlist BIP39:
 
@@ -127,14 +131,14 @@ Cada palavra do mnemonic é acompanhada de seu índice na wordlist BIP39:
 03. 0097 able
 ```
 
-## 🧭 Derivation Path
+## Derivation Path
 
 Mainnet: m/84'/0'/0'
 Testnet: m/84'/1'/0'
 
 ---
 
-## 🏷️ Endereços
+## Endereços
 
 Geração de endereços Native SegWit:
 
@@ -144,7 +148,7 @@ m/84'/0'/0'/0/0 → bc1...
 
 ---
 
-## 🔎 Compatibilidade
+## Compatibilidade
 
 - Sparrow Wallet
 - Electrum
@@ -155,7 +159,7 @@ Qualquer wallet BIP39/BIP84 compatível
 
 ---
 
-## ⚠️ Aviso Legal
+## Aviso Legal
 
 Este software é fornecido “como está”, sem garantias.
 
@@ -163,7 +167,7 @@ Você é 100% responsável pelo uso, armazenamento e segurança das chaves gerad
 
 ---
 
-## 🧠 Threat Model
+## Threat Model
 
 **Este software NÃO PROTEGE contra:**
 
@@ -184,7 +188,7 @@ Para máxima segurança, use em um computador offline, limpo e temporário.
 
 ---
 
-## 🛠️ Requisitos para desenvolvimento
+## Requisitos para desenvolvimento
 
 - Rust 1.89
 
@@ -196,7 +200,7 @@ rustc --version
 
 ---
 
-## 🙏 Créditos
+## Créditos
 
 Este projeto é baseado em padrões bem estabelecidos do Bitcoin e no trabalho da comunidade de código aberto, especialmente:
 

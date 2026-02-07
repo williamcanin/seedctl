@@ -1,10 +1,14 @@
-# SeedCTL
+<p align="center">
+  <img src=".github/assets/seedctl.png" alt="SeedCTL" width="200"/>
+</p>
 
-🇧🇷 [**Ler em Português**](README.md)
+[![Build and Release (Linux & Windows)](https://github.com/williamcanin/seedctl/actions/workflows/release.yml/badge.svg)](https://github.com/williamcanin/seedctl/actions/workflows/release.yml)
 
-Deterministic, auditable, and security-focused Bitcoin wallet generator, written in [**Rust**](https://rust-lang.org).
+🇧🇷 [**Ler em Português**](README-ptbr.md)
 
-This program allows you to generate a Bitcoin wallet from **physical data (data/dice)** and/or **system entropy**, producing:
+**SeedCTL** is a **deterministic, auditable, and security-focused** Bitcoin wallet generator, written in [**Rust**](https://rust-lang.org/).
+
+This program allows you to generate a Bitcoin wallet from **physical data (data/dice) 🎲** and/or **system entropy**, producing:
 
 - BIP39 mnemonic (12 or 24 words)
 - Support for **optional passphrase**
@@ -17,7 +21,7 @@ The main objective is to allow **secure, verifiable, and offline generation** of
 
 ---
 
-## 🔐 Security Philosophy
+## Security Philosophy
 
 - No network dependency
 - No data transmission
@@ -26,44 +30,44 @@ The main objective is to allow **secure, verifiable, and offline generation** of
 - Compatible with manual verification (dice, word indexes, derivation path)
 - Clear separation between **deterministic mode** and **hybrid mode**
 
-> ⚠️ **WARNING**
+> **WARNING**
 > This program **displays sensitive information** (mnemonic, passphrase, keys).
 > Use **only in a secure and offline environment**. Recommended for use with [Tails](https://tails.net/)
 
 ---
 
-## ✨ Features
+## Features
 
-- ✅ BIP39 – 12 or 24 words
-- 🎲 Entropy via physical data (1–6)
-- 🔀 Hybrid entropy (physical data + system RNG)
-- 🔁 Automatic generation or manual data entry
-- 🔍 Visual confirmation of the data sequence
-- 🔐 Optional passphrase (BIP39)
-- 🌐 Mainnet and Testnet
-- 🧭 BIP84 (Native SegWit)
-- 📇 Display of **Word Indexes** (base 1, format `0001`)
-- 🏷️ Generation of `bc1` / `tb1` addresses
+- BIP39 – 12 or 24 words
+- Entropy via physical data (1–6)
+- Hybrid entropy (physical data + system RNG)
+- Automatic generation or manual data entry
+- Visual confirmation of the data sequence
+- Optional passphrase (BIP39)
+- Mainnet and Testnet
+- BIP84 (Native SegWit)
+- Display of **Word Indexes** (base 1, format `0001`)
+- Generation of `bc1` / `tb1` addresses
 
 ---
 
-## 📚 Documentation
+## Documentation
 
-- 🔎 **Deterministic Portfolio Replication**
+- **Deterministic Portfolio Replication**
 
 See [`REPRODUCIBILITY.md`](REPRODUCIBILITY.md)
 
-- 🔐 **Binary and Release Verification (SHA256 + GPG)**
+- **Binary and Release Verification (SHA256 + GPG)**
 
 See [`VERIFYING_RELEASES.md`](VERIFYING_RELEASES.md)
 
 ---
 
-## 🎲 Entropy Modes
+## Entropy Modes
 
 The program offers **two distinct modes**, with different objectives.
 
-### 1️⃣ Manual Mode (Deterministic)
+### Manual Mode (Deterministic)
 
 Suitable for:
 
@@ -86,11 +90,11 @@ entropy = SHA256(dice_entropy)
 
 ```
 
-📌 This mode is **100% deterministic and reproducible**.
+This mode is **100% deterministic and reproducible**.
 
 ---
 
-### 2️⃣ Automatic (Hybrid) Mode
+### Automatic (Hybrid) Mode
 
 Suitable for:
 
@@ -103,9 +107,9 @@ Defense in depth
 
 - The program automatically generates:
 
-- 🎲 Random physical data (1–6)
+- Random physical data (1–6)
 
-- 🔐 System-safe entropy (CSPRNG)
+- System-safe entropy (CSPRNG)
 
 - The two sources are combined and hashed
 
@@ -120,14 +124,14 @@ entropy_final = SHA256(dice_entropy || hex_entropy)
 ✔ Not exclusively dependent on human error
 ✔ Not exclusively dependent on the system
 
-⚠️ **Important:**
+**Important:**
 This mode is **not reproducible** if only the dice are annotated.
 
 For future reproduction, the manual mode must be used.
 
 ---
 
-## 📇 Word Indexes (BIP39)
+## Word Indexes (BIP39)
 
 Each word in the mnemonic is accompanied by its index in the BIP39 wordlist:
 
@@ -137,14 +141,14 @@ Each word in the mnemonic is accompanied by its index in the BIP39 wordlist:
 03. 0097 able
 ```
 
-## 🧭 Derivation Path
+## Derivation Path
 
 Mainnet: m/84'/0'/0'
 Testnet: m/84'/1'/0'
 
 ---
 
-## 🏷️ Addresses
+## Addresses
 
 Native SegWit address generation:
 
@@ -155,7 +159,7 @@ m/84'/0'/0'/0/0 → bc1...
 
 ---
 
-## 🔎 Compatibility
+## Compatibility
 
 - Sparrow Wallet
 - Electrum
@@ -166,7 +170,7 @@ Any BIP39/BIP84 wallet Compatible
 
 ---
 
-## ⚠️ Legal Notice
+## Legal Notice
 
 This software is provided “as is,” without warranties.
 
@@ -174,7 +178,7 @@ You are 100% responsible for the use, storage, and security of the generated key
 
 ---
 
-## 🧠 Threat Model
+## Threat Model
 
 **This software DOES NOT PROTECT against:**
 
@@ -195,7 +199,7 @@ For maximum security, use on a clean, temporary, offline computer.
 
 ---
 
-## 🛠️ Development Requirements
+## Development Requirements
 
 - Rust 1.89
 
@@ -208,7 +212,7 @@ rustc --version
 
 ---
 
-## 🙏 Credits
+## Credits
 
 This project is based on well-established Bitcoin standards and the work of the open-source community, especially:
 
