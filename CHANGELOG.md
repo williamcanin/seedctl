@@ -10,3 +10,7 @@
 - Removing icons/emojis from documentation
 - Logo creation for documentation and SeedCTL
 - Enhancing visuals with the Dialoguer library
+
+# [0.1.2] – 2026-02-07
+
+- Improving visuals and information
