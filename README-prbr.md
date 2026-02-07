@@ -238,4 +238,5 @@ Agradecimentos especiais a:
 - **William C. Canin**
 
 ---
+
 Este projeto foi construído com um forte foco em **segurança, transparência e verificabilidade**, visando dar aos usuários controle total sobre suas chaves Bitcoin.

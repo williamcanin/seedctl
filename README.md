@@ -249,4 +249,6 @@ Special thanks to:
 
 - **William C. Canin**
 
---- This project was built with a strong focus on **security, transparency, and verifiability**, aiming to give users complete control over their Bitcoin keys.
+---
+
+This project was built with a strong focus on **security, transparency, and verifiability**, aiming to give users complete control over their Bitcoin keys.
