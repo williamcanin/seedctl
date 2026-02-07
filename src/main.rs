@@ -28,6 +28,9 @@ fn main() {
     style("https://github.com/williamcanin/seedctl/README.md").cyan()
   );
 
+  // SECURITY CHECK — MUST BE FIRST
+  utils::ensure_offline();
+
   // MNEMONIC SIZE
 
   let mnemonic_choice = Select::with_theme(&utils::dialoguer_theme("►"))

@@ -50,6 +50,38 @@ pub fn finished() {
   }
 }
 
+// NETWORK / SECURITY
+
+pub fn ensure_offline() {
+  use if_addrs::get_if_addrs;
+
+  let interfaces = match get_if_addrs() {
+    Ok(ifaces) => ifaces,
+    Err(_) => return, // If you can't read it, DO NOT block it.
+  };
+
+  for iface in interfaces {
+    // ignore loopback
+    if iface.is_loopback() {
+      continue;
+    }
+
+    // If any non-loopback interface is encountered → ABORT
+    eprintln!(
+      "\n{}\n{}\n",
+      console::style("[ SECURITY ABORT ]").bold().red(),
+      console::style(
+        "Active network interface detected.\n\
+         This program MUST be used offline / air-gapped.\n\n\
+         Disable Wi-Fi, Ethernet, VPNs and try again."
+      )
+      .yellow()
+    );
+
+    std::process::exit(1);
+  }
+}
+
 // ENTROPY
 
 pub fn read_manual_dice_with_feedback(bits_target: usize) -> Vec<u8> {
