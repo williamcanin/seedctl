@@ -58,19 +58,7 @@ fn main() {
   let dice: Vec<u8> = match dice_mode {
     0 => utils::generate_random_dice(min_dice),
     1 => {
-      let input: String = Input::with_theme(&utils::dialoguer_theme("►"))
-        .with_prompt("Enter the data sequence (1–6)")
-        .interact_text()
-        .unwrap();
-
-      let dice: Vec<u8> = input
-        .chars()
-        .map(|c| c.to_digit(10).expect("Invalid entry") as u8)
-        .collect();
-
-      if dice.iter().any(|&d| !(1..=6).contains(&d)) {
-        panic!("Only numbers from 1 to 6.");
-      }
+      let dice = utils::read_manual_dice_with_feedback(bits);
 
       if dice.len() < min_dice {
         panic!(

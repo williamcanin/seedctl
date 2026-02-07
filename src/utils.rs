@@ -2,6 +2,12 @@ use bitcoin::{
   base58,
   bip32::{Xpriv, Xpub},
 };
+use crossterm::{
+  event::{Event, KeyCode, read},
+  execute,
+  terminal::{disable_raw_mode, enable_raw_mode},
+};
+use std::io::{self, Write};
 
 use dialoguer::theme::ColorfulTheme;
 use rand::Rng;
@@ -33,8 +39,6 @@ pub fn finished() {
 
   #[cfg(target_os = "windows")]
   {
-    use std::io;
-
     println!(
       "{}\n",
       style("The program has ended. Press ENTER to exit.")
@@ -47,6 +51,67 @@ pub fn finished() {
 }
 
 // ENTROPY
+
+pub fn read_manual_dice_with_feedback(bits_target: usize) -> Vec<u8> {
+  use crossterm::{
+    cursor::{Hide, Show},
+    execute,
+    terminal::{Clear, ClearType},
+  };
+
+  enable_raw_mode().unwrap();
+  execute!(io::stdout(), Hide).unwrap();
+
+  let mut dice: Vec<u8> = Vec::new();
+
+  println!("\n[ Enter dice sequence (1–6) ]");
+
+  loop {
+    if let Event::Key(event) = read().unwrap() {
+      match event.code {
+        KeyCode::Char(c) if ('1'..='6').contains(&c) => {
+          dice.push(c.to_digit(10).unwrap() as u8);
+        }
+        KeyCode::Backspace => {
+          dice.pop();
+        }
+        KeyCode::Enter => {
+          break;
+        }
+        _ => {}
+      }
+
+      let dice_count = dice.len();
+      let bits = (dice_count as f64) * BITS_PER_DIE;
+      let ready = bits >= bits_target as f64;
+
+      let status = if ready {
+        "✔ enough"
+      } else {
+        "… not enough"
+      };
+
+      let dice_str: String = dice.iter().map(|d| char::from(b'0' + *d)).collect();
+
+      // Rewrite ONLY the current line
+      print!("\r");
+      execute!(io::stdout(), Clear(ClearType::CurrentLine)).unwrap();
+
+      print!(
+        "> Dice: {:3} | Bits: {:7.2} / {:3} | {} | [{}]",
+        dice_count, bits, bits_target, status, dice_str
+      );
+
+      io::stdout().flush().unwrap();
+    }
+  }
+
+  execute!(io::stdout(), Show).unwrap();
+  disable_raw_mode().unwrap();
+  println!();
+
+  dice
+}
 
 pub fn dice_hash(dice: &[u8]) -> Vec<u8> {
   Sha256::digest(dice).to_vec()
