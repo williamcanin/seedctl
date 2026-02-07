@@ -3,6 +3,16 @@
 </p>
 
 [![Build and Release (Linux & Windows)](https://github.com/williamcanin/seedctl/actions/workflows/release.yml/badge.svg)](https://github.com/williamcanin/seedctl/actions/workflows/release.yml)
+![Release](https://img.shields.io/github/v/release/williamcanin/seedctl?label=latest&color=blue)
+![License](https://img.shields.io/github/license/williamcanin/seedctl)
+![Rust](https://img.shields.io/badge/rust-1.75%2B-orange)
+![Last commit](https://img.shields.io/github/last-commit/williamcanin/seedctl)
+![Issues](https://img.shields.io/github/issues/williamcanin/seedctl)
+![Offline](https://img.shields.io/badge/works-offline-important)
+![Deterministic](https://img.shields.io/badge/deterministic-yes-success)
+![No network](https://img.shields.io/badge/network-none-lightgrey)
+![Stars](https://img.shields.io/github/stars/williamcanin/seedctl)
+![Forks](https://img.shields.io/github/forks/williamcanin/seedctl)
 
 🇺🇸 [**Read in English**](README-en.md)
 
@@ -236,6 +246,17 @@ Agradecimentos especiais a:
 ### Autor/Mantenedor
 
 - **William C. Canin**
+
+---
+
+## Suporte para este projeto
+
+[![Donate](https://img.shields.io/badge/Donate-Bitcoin%20|%20Pix%20|%20PayPal-F5C400?style=for-the-badge)](
+https://github.com/williamcanin/donations
+)
+[![Sponsor](https://img.shields.io/badge/Sponsor-GitHub-%23ea4aaa?style=for-the-badge)](
+https://github.com/sponsors/williamcanin
+)
 
 ---
 
