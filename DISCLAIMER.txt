@@ -1,0 +1,2 @@
+This software can irreversibly expose private keys.
+Use only if you fully understand Bitcoin key management.
