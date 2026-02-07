@@ -23,7 +23,6 @@ pub fn dialoguer_theme(arrow: &str) -> ColorfulTheme {
 
 pub fn finished() {
   use console::style;
-  use std::io;
 
   println!(
     "\n{}\n",
@@ -34,6 +33,8 @@ pub fn finished() {
 
   #[cfg(target_os = "windows")]
   {
+    use std::io;
+
     println!(
       "{}\n",
       style("The program has ended. Press ENTER to exit.")
