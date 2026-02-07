@@ -6,13 +6,9 @@
 ![Release](https://img.shields.io/github/v/release/williamcanin/seedctl?label=latest&color=blue)
 ![License](https://img.shields.io/github/license/williamcanin/seedctl)
 ![Rust](https://img.shields.io/badge/rust-1.75%2B-orange)
-![Last commit](https://img.shields.io/github/last-commit/williamcanin/seedctl)
-![Issues](https://img.shields.io/github/issues/williamcanin/seedctl)
 ![Offline](https://img.shields.io/badge/works-offline-important)
 ![Deterministic](https://img.shields.io/badge/deterministic-yes-success)
 ![No network](https://img.shields.io/badge/network-none-lightgrey)
-![Stars](https://img.shields.io/github/stars/williamcanin/seedctl)
-![Forks](https://img.shields.io/github/forks/williamcanin/seedctl)
 
 🇧🇷 [**Ler em Português**](README-ptbr.md)
 
@@ -28,6 +24,28 @@ This program allows you to generate a Bitcoin wallet from **physical data (data/
 - Generation of **deterministic addresses**
 
 The main objective is to allow **secure, verifiable, and offline generation** of Bitcoin seeds, with a high level of paranoia and total control of the process.
+
+---
+
+## Mirrors
+
+This repository is primarily maintained on **GitHub**.
+
+A synchronized mirror is available on **GitLab**:
+
+- **GitHub (canonical)**: https://github.com/williamcanin/seedctl
+- **GitLab (mirror)**: https://gitlab.com/williamcanin/seedctl
+
+---
+
+## Project Status
+
+Maintenance and activity indicators for the canonical **GitHub** repository.
+
+![Last commit](https://img.shields.io/github/last-commit/williamcanin/seedctl)
+![Issues](https://img.shields.io/github/issues/williamcanin/seedctl)
+![Stars](https://img.shields.io/github/stars/williamcanin/seedctl)
+![Forks](https://img.shields.io/github/forks/williamcanin/seedctl)
 
 ---
 
