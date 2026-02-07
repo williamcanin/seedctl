@@ -1,5 +1,5 @@
 <p align="center">
-  <img src=".github/assets/seedctl.png" alt="SeedCTL" width="200"/>
+  <img src=".github/assets/seedctl.png" alt="SeedCTL" width="350"/>
 </p>
 
 [![Build and Release (Linux & Windows)](https://github.com/williamcanin/seedctl/actions/workflows/release.yml/badge.svg)](https://github.com/williamcanin/seedctl/actions/workflows/release.yml)
