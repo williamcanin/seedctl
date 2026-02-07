@@ -1,125 +1,135 @@
 # SeedCTL
 
-🇺🇸 [**Read in English**](README-en.md)
+🇧🇷 [**Ler em Português**](README.md)
 
-Gerador de carteiras Bitcoin **determinístico, auditável e focado em segurança**, escrito em [**Rust**](https://rust-lang.org/).
+Deterministic, auditable, and security-focused Bitcoin wallet generator, written in [**Rust**](https://rust-lang.org).
 
-Este programa permite gerar uma carteira Bitcoin a partir de **dados físicos (dados/dice)** e/ou **entropia do sistema**, produzindo:
+This program allows you to generate a Bitcoin wallet from **physical data (data/dice)** and/or **system entropy**, producing:
 
-- Mnemonic BIP39 (12 ou 24 palavras)
-- Suporte a **passphrase opcional**
-- Derivação **BIP84 (Native SegWit – bc1)**
-- Suporte a **Mainnet e Testnet**
-- Exibição de [**Word Indexes BIP39**](https://github.com/bitcoin/bips/blob/master/bip-0039/english.txt)
-- Geração de **endereços determinísticos**
+- BIP39 mnemonic (12 or 24 words)
+- Support for **optional passphrase**
+- BIP84 derivation (Native SegWit – bc1)**
+- Support for **Mainnet and Testnet**
+- Display of [**Word Indexes BIP39**](https://github.com/bitcoin/bips/blob/master/bip-0039/english.txt)
+- Generation of **deterministic addresses**
 
-O objetivo principal é permitir **geração segura, verificável e offline** de seeds Bitcoin, com alto nível de paranoia e controle total do processo.
-
----
-
-## 🔐 Filosofia de Segurança
-
-- Nenhuma dependência de rede
-- Nenhum envio de dados
-- Nenhuma persistência em disco
-- Ideal para uso **offline / air-gapped**
-- Compatível com verificação manual (dice, word indexes, derivation path)
-- Separação clara entre **modo determinístico** e **modo híbrido**
-
-> ⚠️ **ATENÇÃO**
-> Este programa **exibe informações sensíveis** (mnemonic, passphrase, chaves).
-> Utilize **somente em ambiente seguro e offline**. Recomendável usar com [Tails](https://tails.net/)
+The main objective is to allow **secure, verifiable, and offline generation** of Bitcoin seeds, with a high level of paranoia and total control of the process.
 
 ---
 
-## ✨ Funcionalidades
+## 🔐 Security Philosophy
 
-- ✅ BIP39 – 12 ou 24 palavras
-- 🎲 Entropia via dados físicos (1–6)
-- 🔀 Entropia híbrida (dados físicos + RNG do sistema)
-- 🔁 Geração automática ou entrada manual de dados
-- 🔍 Confirmação visual da sequência de dados
-- 🔐 Passphrase opcional (BIP39)
-- 🌐 Mainnet e Testnet
+- No network dependency
+- No data transmission
+- No disk persistence
+- Ideal for **offline / air-gapped** use
+- Compatible with manual verification (dice, word indexes, derivation path)
+- Clear separation between **deterministic mode** and **hybrid mode**
+
+> ⚠️ **WARNING**
+> This program **displays sensitive information** (mnemonic, passphrase, keys).
+> Use **only in a secure and offline environment**. Recommended for use with [Tails](https://tails.net/)
+
+---
+
+## ✨ Features
+
+- ✅ BIP39 – 12 or 24 words
+- 🎲 Entropy via physical data (1–6)
+- 🔀 Hybrid entropy (physical data + system RNG)
+- 🔁 Automatic generation or manual data entry
+- 🔍 Visual confirmation of the data sequence
+- 🔐 Optional passphrase (BIP39)
+- 🌐 Mainnet and Testnet
 - 🧭 BIP84 (Native SegWit)
-- 📇 Exibição dos **Word Indexes** (base 1, formato `0001`)
-- 🏷️ Geração de endereços `bc1` / `tb1`
+- 📇 Display of **Word Indexes** (base 1, format `0001`)
+- 🏷️ Generation of `bc1` / `tb1` addresses
 
 ---
 
-## 📚 Documentação
+## 📚 Documentation
 
-- 🔎 **Reprodução determinística de carteiras**
-  Veja [`REPRODUCIBILITY.md`](REPRODUCIBILITY.md)
+- 🔎 **Deterministic Portfolio Replication**
 
-- 🔐 **Verificação de binários e releases (SHA256 + GPG)**
-  Veja [`VERIFYING_RELEASES.md`](VERIFYING_RELEASES.md)
+See [`REPRODUCIBILITY.md`](REPRODUCIBILITY.md)
+
+- 🔐 **Binary and Release Verification (SHA256 + GPG)**
+
+See [`VERIFYING_RELEASES.md`](VERIFYING_RELEASES.md)
 
 ---
 
-## 🎲 Modos de Entropia
+## 🎲 Entropy Modes
 
-O programa oferece **dois modos distintos**, com objetivos diferentes.
+The program offers **two distinct modes**, with different objectives.
 
-### 1️⃣ Modo Manual (Determinístico)
+### 1️⃣ Manual Mode (Deterministic)
 
-Indicado para:
+Suitable for:
 
-- Recuperar uma carteira existente
-- Auditoria
-- Cerimônias de geração reproduzíveis
-- Verificação independente
+- Recovering an existing portfolio
+- Auditing
+- Reproducible generation ceremonies
+- Independent verification
 
-**Como funciona:**
+**How ​​it works:**
 
-- O usuário informa manualmente a sequência de dados (1–6)
-- Nenhuma entropia do sistema é utilizada
-- A mesma sequência + mesma passphrase ⇒ **sempre a mesma carteira**
+- The user manually enters the data sequence (1–6)
 
-**Modelo conceitual:**
+- No system entropy is used
+- The same sequence + same passphrase ⇒ **always the same portfolio**
+
+**Conceptual model:**
 
 ```bash
 entropy = SHA256(dice_entropy)
+
 ```
 
-📌 Este modo é **100% determinístico e reproduzível**.
+📌 This mode is **100% deterministic and reproducible**.
 
 ---
 
-### 2️⃣ Modo Automático (Híbrido)
+### 2️⃣ Automatic (Hybrid) Mode
 
-Indicado para:
+Suitable for:
 
-- Criar carteiras novas
-- Aumentar entropia contra falhas humanas
-- Defesa em profundidade
+- Creating new wallets
+- Increasing entropy against human error
 
-**Como funciona:**
+Defense in depth
 
-- O programa gera automaticamente:
-  - 🎲 Dados físicos aleatórios (1–6)
-  - 🔐 Entropia segura do sistema (CSPRNG)
-- As duas fontes são combinadas e hashadas
+**How ​​it works:**
 
-**Modelo conceitual:**
+- The program automatically generates:
+
+- 🎲 Random physical data (1–6)
+
+- 🔐 System-safe entropy (CSPRNG)
+
+- The two sources are combined and hashed
+
+**Conceptual model:**
 
 ```bash
 entropy_final = SHA256(dice_entropy || hex_entropy)
+
 ```
 
-✔ Mesmo que uma fonte falhe, a outra preserva a segurança
-✔ Não depende exclusivamente do humano
-✔ Não depende exclusivamente do sistema
+✔ Even if one source fails, the other preserves security
+✔ Not exclusively dependent on human error
+✔ Not exclusively dependent on the system
 
-⚠️ **Importante:**
-Este modo **não é reproduzível** se apenas o dice for anotado.
-Para reprodução futura, o modo manual deve ser utilizado.
+⚠️ **Important:**
+This mode is **not reproducible** if only the dice are annotated.
+
+For future reproduction, the manual mode must be used.
 
 ---
 
 ## 📇 Word Indexes (BIP39)
 
-Cada palavra do mnemonic é acompanhada de seu índice na wordlist BIP39:
+Each word in the mnemonic is accompanied by its index in the BIP39 wordlist:
 
 ```bash
 01. 0001 abandon
@@ -134,104 +144,105 @@ Testnet: m/84'/1'/0'
 
 ---
 
-## 🏷️ Endereços
+## 🏷️ Addresses
 
-Geração de endereços Native SegWit:
+Native SegWit address generation:
 
 ```bash
 m/84'/0'/0'/0/0 → bc1...
+
 ```
 
 ---
 
-## 🔎 Compatibilidade
+## 🔎 Compatibility
 
 - Sparrow Wallet
 - Electrum
 - BlueWallet
 - Bitcoin Core
 
-Qualquer wallet BIP39/BIP84 compatível
+Any BIP39/BIP84 wallet Compatible
 
 ---
 
-## ⚠️ Aviso Legal
+## ⚠️ Legal Notice
 
-Este software é fornecido “como está”, sem garantias.
+This software is provided “as is,” without warranties.
 
-Você é 100% responsável pelo uso, armazenamento e segurança das chaves geradas.
+You are 100% responsible for the use, storage, and security of the generated keys.
 
 ---
 
 ## 🧠 Threat Model
 
-**Este software NÃO PROTEGE contra:**
+**This software DOES NOT PROTECT against:**
 
-- Malware no sistema operacional
+- Malware in the operating system
 - Keyloggers
 - Screen capture
-- Firmware comprometido
+- Compromised firmware
 - Supply-chain attacks
 
-**Este software PROTEGE contra:**
+**This software PROTECTS against:**
 
-- Falhas de RNG do sistema (via dados físicos)
-- Dependência de serviços externos
-- Seed generation opaca
-- Falta de auditabilidade
+- System RNG failures (via physical data)
+- Dependence on external services
+- Opaque seed generation
+- Lack of auditability
 
-Para máxima segurança, use em um computador offline, limpo e temporário.
+For maximum security, use on a clean, temporary, offline computer.
 
 ---
 
-## 🛠️ Requisitos para desenvolvimento
+## 🛠️ Development Requirements
 
 - Rust 1.89
 
-Verifique com:
+Check with:
 
 ```bash
 rustc --version
+
 ```
 
 ---
 
-## 🙏 Créditos
+## 🙏 Credits
 
-Este projeto é baseado em padrões bem estabelecidos do Bitcoin e no trabalho da comunidade de código aberto, especialmente:
+This project is based on well-established Bitcoin standards and the work of the open-source community, especially:
 
-### Propostas de Melhoria do Bitcoin (BIPs)
+### Bitcoin Improvement Proposals (BIPs)
 
-- **BIP32** — Carteiras Hierárquicas Determinísticas
-- **BIP39** — Código mnemônico para geração de chaves determinísticas
-- **BIP84** — Esquema de derivação para carteiras SegWit nativas
+- **BIP32** — Deterministic Hierarchical Wallets
+- **BIP39** — Mnemonic code for deterministic key generation
+- **BIP84** — Derivation scheme for native SegWit wallets
 
-Essas especificações definem a base para a geração de chaves determinísticas e a interoperabilidade de carteiras.
+These specifications define the basis for deterministic key generation and wallet interoperability.
 
-### Ecossistema Rust
+### Rust Ecosystem
 
-Este projeto utiliza bibliotecas Rust de código aberto de alta qualidade, incluindo:
+This project uses high-quality open-source Rust libraries, including:
 
-- `bitcoin` — Estruturas de dados, chaves e derivação do Bitcoin
-- `bip39` — Geração e validação de mnemônicos
-- `secp256k1` (via `bitcoin`) — Criptografia de curva elíptica
-- `dialoguer` — Interação segura e amigável via linha de comando
-- `console` — Estilização do terminal e formatação de saída
-- `rand` — Geração de números aleatórios (ao usar entropia automática)
+- `bitcoin` — Bitcoin data structures, keys, and derivation
+- `bip39` — Mnemonic generation and validation
+- `secp256k1` (via `bitcoin`) — Elliptic curve cryptography
+- `dialoguer` — Secure and user-friendly interaction via command line
+- `console` — Terminal styling and output formatting
+- `rand` — Random number generation (using automatic entropy)
 
-Todos os créditos são dos autores e mantenedores dessas bibliotecas.
+All credits belong to the authors and maintainers of these libraries.
 
-### Comunidade
+### Community
 
-Agradecimentos especiais a:
+Special thanks to:
 
-- Os desenvolvedores e colaboradores do **Bitcoin Core**
-- A **comunidade de código aberto do Bitcoin** em geral
-- Pesquisadores e desenvolvedores que priorizam a transparência, a auditabilidade e a soberania do usuário
+- The developers and contributors of **Bitcoin Core**
+- The **Bitcoin open source community** in general
+- Researchers and developers who prioritize transparency, auditability, and user sovereignty
 
-### Autor/Mantenedor
+### Author/Maintainer
 
 - **William C. Canin**
 
----
-Este projeto foi construído com um forte foco em **segurança, transparência e verificabilidade**, visando dar aos usuários controle total sobre suas chaves Bitcoin.
+--- This project was built with a strong focus on **security, transparency, and verifiability**, aiming to give users complete control over their Bitcoin keys.
