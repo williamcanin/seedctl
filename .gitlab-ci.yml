@@ -1,0 +1,79 @@
+stages:
+  - build
+  - release
+
+variables:
+  CARGO_HOME: "$CI_PROJECT_DIR/.cargo"
+
+# Global rule: only executes if it's a tag starting with 'v'.
+workflow:
+  rules:
+    - if: $CI_COMMIT_TAG =~ /^v/
+
+cache:
+  key: ${CI_JOB_NAME}
+  paths:
+    - .cargo/registry
+    - target/
+
+# Template to avoid code repetition
+.build_template:
+  stage: build
+  script:
+    - apt-get update && apt-get install -y jq
+    - VERSION=$(cargo metadata --no-deps --format-version=1 | jq -r '.packages[0].version')
+    - echo "VERSION=$VERSION" >> build.env
+    - cargo build --release --target $TARGET
+    - mkdir -p dist
+    - cp target/$TARGET/release/seedctl${EXE} dist/seedctl-v${VERSION}-${SUFFIX}${EXE}
+  artifacts:
+    reports:
+      dotenv: build.env
+    paths:
+      - dist/
+
+build:linux:
+  extends: .build_template
+  image: rust:latest
+  variables:
+    TARGET: x86_64-unknown-linux-gnu
+    SUFFIX: linux-x86_64
+    EXE: ""
+
+build:windows:
+  extends: .build_template
+  image: rustembedded/cross:x86_64-pc-windows-gnu
+  variables:
+    TARGET: x86_64-pc-windows-gnu
+    SUFFIX: windows-x86_64
+    EXE: ".exe"
+
+release:
+  stage: release
+  image: rust:latest
+  needs:
+    - job: build:linux
+    - job: build:windows
+  before_script:
+    - apt-get update && apt-get install -y gnupg jq curl
+    # The VERSION variable will come from build.env automatically via artifacts:reports:dotenv
+  script:
+    - cd dist
+    - sha256sum * > SHA256SUMS
+    - echo "$GPG_PRIVATE_KEY" | gpg --batch --import
+    - echo "$GPG_PASSPHRASE" | gpg --batch --yes --pinentry-mode loopback --passphrase-fd 0 --armor --detach-sign SHA256SUMS
+    # Using the official GitLab command to create Releases
+    - |
+      curl --request POST \
+        --header "PRIVATE-TOKEN: $GITLAB_TOKEN" \
+        --form "name=Version $VERSION" \
+        --form "tag_name=$CI_COMMIT_TAG" \
+        --form "description=Automatic release generated from Cargo.toml. Version: $VERSION" \
+        "$CI_API_V4_URL/projects/$CI_PROJECT_ID/releases"
+    # Upload the assets (links to the artifacts)
+    - |
+      for file in *; do
+        curl --request POST --header "PRIVATE-TOKEN: $GITLAB_TOKEN" \
+          --form "file=@${file}" \
+          "$CI_API_V4_URL/projects/$CI_PROJECT_ID/packages/generic/seedctl/$VERSION/${file}"
+      done
