@@ -16,17 +16,16 @@ use bitcoin::{
 };
 
 fn main() {
+  // SLOGAN
   println!(
-    "{}",
+    "{}{}\n{}\n{}{}\n",
     style(slogan::slogan())
       .bold()
-      .fg(Color::TrueColor(255, 165, 0))
-  );
-  println!("{}", style(slogan::banner(version::VERSION)).bold().green());
-
-  println!(
-    "{}\n\n",
-    style("A deterministic, auditable, and security-focused Bitcoin wallet generator.").bold()
+      .fg(Color::TrueColor(255, 165, 0)),
+    style(slogan::banner(version::VERSION)).bold().green(),
+    style("A deterministic, auditable, and security-focused Bitcoin wallet generator.").bold(),
+    style("Documentation: ").bold().yellow(),
+    style("https://github.com/williamcanin/seedctl/README.md").cyan()
   );
 
   // MNEMONIC SIZE
