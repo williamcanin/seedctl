@@ -2,12 +2,50 @@ use bitcoin::{
   base58,
   bip32::{Xpriv, Xpub},
 };
+
+use dialoguer::theme::ColorfulTheme;
 use rand::Rng;
 use sha2::{Digest, Sha256};
 
 const BITS_PER_DIE: f64 = 2.584962500721156;
 
-// ENTROPY FUNCTIONS
+pub fn dialoguer_theme(arrow: &str) -> ColorfulTheme {
+  use console::style;
+
+  let mut theme = ColorfulTheme {
+    active_item_prefix: style(arrow.to_string()),
+    ..Default::default()
+  };
+
+  theme.active_item_prefix = style("►".to_string());
+  theme
+}
+
+pub fn finished() {
+  use console::style;
+  use std::io;
+
+  println!(
+    "\n{}\n",
+    style("[ IMPORTANT! Before you leave, write down your mnemonic BIP39 (seed) and your Passphrase (if you used one). ]")
+      .bold()
+      .magenta()
+  );
+
+  #[cfg(target_os = "windows")]
+  {
+    println!(
+      "{}\n",
+      style("The program has ended. Press ENTER to exit.")
+        .bold()
+        .yellow()
+    );
+    let mut input = String::new();
+    let _ = io::stdin().read_line(&mut input);
+  }
+}
+
+// ENTROPY
 
 pub fn dice_hash(dice: &[u8]) -> Vec<u8> {
   Sha256::digest(dice).to_vec()

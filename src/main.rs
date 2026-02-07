@@ -1,11 +1,12 @@
 // Author: William C. Canin <https://williamcanin.github.io>
 
+mod slogan;
 mod utils;
 mod version;
 
 use bip39::Mnemonic;
 
-use console::style;
+use console::{Color, style};
 use dialoguer::{Confirm, Input, Select};
 
 use bitcoin::{
@@ -16,11 +17,12 @@ use bitcoin::{
 
 fn main() {
   println!(
-    "\n{}\n",
-    style(format!("SeedCTL - version {}", version::VERSION))
+    "{}",
+    style(slogan::slogan())
       .bold()
-      .cyan()
+      .fg(Color::TrueColor(255, 165, 0))
   );
+  println!("{}", style(slogan::banner(version::VERSION)).bold().green());
 
   println!(
     "{}\n\n",
@@ -29,7 +31,7 @@ fn main() {
 
   // MNEMONIC SIZE
 
-  let mnemonic_choice = Select::new()
+  let mnemonic_choice = Select::with_theme(&utils::dialoguer_theme("►"))
     .with_prompt("[ Mnemonic size (seed) ]")
     .items(["12 words (128 bits)", "24 words (256 bits)"])
     .default(0)
@@ -47,7 +49,7 @@ fn main() {
 
   // DICE MODE
 
-  let dice_mode = Select::new()
+  let dice_mode = Select::with_theme(&utils::dialoguer_theme("►"))
     .with_prompt("[ Dice (1-6) ]")
     .items(["Auto (random)", "Manual (inform sequence)"])
     .default(0)
@@ -57,7 +59,7 @@ fn main() {
   let dice: Vec<u8> = match dice_mode {
     0 => utils::generate_random_dice(min_dice),
     1 => {
-      let input: String = Input::new()
+      let input: String = Input::with_theme(&utils::dialoguer_theme("►"))
         .with_prompt("Enter the data sequence (1–6)")
         .interact_text()
         .unwrap();
@@ -95,7 +97,7 @@ fn main() {
     dice_str
   );
 
-  if !Confirm::new()
+  if !Confirm::with_theme(&utils::dialoguer_theme("►"))
     .with_prompt("Please confirm that the above information is correct.")
     .interact()
     .unwrap()
@@ -105,8 +107,8 @@ fn main() {
 
   // NETWORK
 
-  let network_choice = Select::new()
-    .with_prompt("\nNetwork")
+  let network_choice = Select::with_theme(&utils::dialoguer_theme("►"))
+    .with_prompt("Network")
     .items(["Mainnet", "Testnet"])
     .default(0)
     .interact()
@@ -120,12 +122,12 @@ fn main() {
 
   // PASSPHRASE
 
-  let passphrase_title = style("\nPassphrase (enter = empty)")
+  let passphrase_title = style("[Optional] Passphrase (enter = skip)")
     .bold()
     .yellow()
     .to_string();
 
-  let passphrase: String = Input::new()
+  let passphrase: String = Input::with_theme(&utils::dialoguer_theme("►"))
     .with_prompt(passphrase_title)
     .allow_empty(true)
     .interact_text()
@@ -171,18 +173,16 @@ fn main() {
   let acc_xprv = master.derive_priv(&secp, &path).unwrap();
   let acc_xpub = Xpub::from_priv(&secp, &acc_xprv);
 
-  // OUTPUT
-
-  println!("\n\n\n{}\n", style("OUTPUT:").bold().blue());
+  // OUTPUT / Your wallet
 
   println!(
-    "\n{}\n",
-    style("[ IMPORTANT! Write down your BIP39 mnemonic and your passphrase if you used one. ]")
+    "\n\n{}\n",
+    style(format!("Your wallet: {}", "-".repeat(46)))
       .bold()
-      .magenta()
+      .blue()
   );
 
-  println!("\n{}\n", style("POSITION  INDEXES  WORDS").bold());
+  println!("{}\n", style("POSITION  INDEXES  SEED").bold());
 
   for (i, (word, idx)) in words.iter().zip(indices).enumerate() {
     println!(
@@ -197,17 +197,17 @@ fn main() {
 
   println!(
     "{} {}",
-    style("ZPRV:").bold(),
+    style("\nZPRV:").bold(),
     utils::xprv_to_zprv(&acc_xprv)
   );
 
   println!(
     "{} {}",
-    style("ZPUB:").bold(),
+    style("\nZPUB:").bold(),
     utils::xpub_to_zpub(&acc_xpub)
   );
 
-  println!("\n{}", style("Address BIP84").bold());
+  println!("\n{}", style("Address BIP84:").bold());
 
   for i in 0..10 {
     let child = acc_xpub
@@ -223,4 +223,8 @@ fn main() {
     let addr = Address::p2wpkh(&bitcoin::CompressedPublicKey(child.public_key), network);
     println!("m/84'/{}'/0'/0/{} → {}", coin_type, i, addr);
   }
+
+  println!("\n{}\n", style("-".repeat(60)).bold().blue());
+
+  utils::finished();
 }
