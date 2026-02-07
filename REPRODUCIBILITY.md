@@ -1,12 +1,12 @@
-# 🔎 Reproducibility & Deterministic Wallet Recovery
+# Reproducibility & Deterministic Wallet Recovery
 
-This document explains how to **deterministically reproduce a Bitcoin wallet** generated with **bip39-dice**, step by step.
+This document explains how to **deterministically reproduce a Bitcoin wallet** generated with **SeedCTL**, step by step.
 
 The goal is to ensure that **anyone**, at any point in the future, can reconstruct **the exact same wallet** using the same inputs — without trusting this software, the binary, or its author.
 
 ---
 
-## 🧠 Core Principle
+## Core Principle
 
 Wallet generation is **fully deterministic** given the following parameters:
 
@@ -19,7 +19,7 @@ If **all inputs are identical**, the resulting wallet **will be identical**.
 
 ---
 
-## 🎲 Dice Entropy (Manual Mode)
+## Dice Entropy (Manual Mode)
 
 When using **manual dice input**, the dice sequence becomes a **human-verifiable source of entropy**.
 
@@ -43,7 +43,7 @@ Properties:
 
 ---
 
-## 🔐 Hybrid Entropy Model
+## Hybrid Entropy Model
 
 `seedctl` uses a **hybrid entropy model** internally:
 
@@ -56,7 +56,7 @@ Where:
 * `dice_entropy` is derived from the dice sequence
 * `hex_entropy` is deterministic in manual mode and randomly generated in auto mode
 
-### 🔒 Security Properties
+### Security Properties
 
 * Manual dice mode is **fully reproducible**
 * No hidden randomness is introduced
@@ -69,7 +69,7 @@ This design allows the same software to be used for:
 
 ---
 
-## 🧪 Step-by-Step Reproduction Example
+## Step-by-Step Reproduction Example
 
 ### Parameters
 
@@ -143,11 +143,11 @@ Mainnet
 
 Press **Enter** for empty passphrase, or enter the **exact same passphrase** used originally.
 
-⚠️ The passphrase is part of the seed. Any change results in a different wallet.
+The passphrase is part of the seed. Any change results in a different wallet.
 
 ---
 
-## 📇 Output Verification
+## Output Verification
 
 The following outputs must match **exactly**:
 
@@ -163,7 +163,7 @@ No hashes, binaries or signatures are required for wallet reproduction.
 
 ---
 
-## 🔁 Wallet Recovery in Other Software
+## Wallet Recovery in Other Software
 
 This wallet can be imported into:
 
@@ -184,7 +184,7 @@ Use:
 
 ---
 
-## ⚠️ Common Errors
+## Common Errors
 
 * Using auto mode instead of manual dice
 * Incorrect dice sequence
@@ -196,7 +196,7 @@ Any of these will generate a **different wallet**.
 
 ---
 
-## 🧠 Final Notes
+## Final Notes
 
 Reproducibility is a **security feature**, not a limitation.
 
