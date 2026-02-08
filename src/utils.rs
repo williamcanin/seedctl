@@ -9,11 +9,39 @@ use crossterm::{
 };
 use std::io::{self, Write};
 
+use console::{Color, style};
 use dialoguer::theme::ColorfulTheme;
-use rand::Rng;
+use rand::RngExt;
 use sha2::{Digest, Sha256};
 
+use crate::{meta, slogan};
+
 const BITS_PER_DIE: f64 = 2.584962500721156;
+
+// SLOGAN
+pub fn slogan(show_doc: bool, show_version: bool) {
+  let mut version = meta::VERSION;
+
+  if !show_version {
+    version = "";
+  }
+
+  println!(
+    "{}{}\n{}",
+    style(slogan::slogan())
+      .bold()
+      .fg(Color::TrueColor(255, 165, 0)),
+    style(slogan::program_name_banner(version)).bold().green(),
+    style(meta::PROJECT_DESCRIPTION).bold()
+  );
+  if show_doc {
+    println!(
+      "{}{}\n",
+      style("Documentation: ").bold().yellow(),
+      style(format!("{}/README.md", meta::PROJECT_REPOSITORY)).cyan()
+    );
+  }
+}
 
 pub fn dialoguer_theme(arrow: &str) -> ColorfulTheme {
   use console::style;
@@ -27,16 +55,7 @@ pub fn dialoguer_theme(arrow: &str) -> ColorfulTheme {
   theme
 }
 
-pub fn finished() {
-  use console::style;
-
-  println!(
-    "\n{}\n",
-    style("[ IMPORTANT! Before you leave, write down your mnemonic BIP39 (seed) and your Passphrase (if you used one). ]")
-      .bold()
-      .magenta()
-  );
-
+pub fn exit_confirm() {
   #[cfg(target_os = "windows")]
   {
     println!(
@@ -48,6 +67,64 @@ pub fn finished() {
     let mut input = String::new();
     let _ = io::stdin().read_line(&mut input);
   }
+}
+
+pub fn show_important_card_with_confirm() -> anyhow::Result<bool> {
+  use console::{self, style};
+  use dialoguer::Confirm;
+
+  // CLEAR TERMINAL
+  // let term = console::Term::stdout();
+  // term.clear_screen()?;
+
+  println!(
+    "\n{}",
+    style("┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓").red()
+  );
+  println!("┃{:^60}┃", style(" IMPORTANT! ").bold().red());
+  println!(
+    "{}",
+    style("┣━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┫").red()
+  );
+  println!("┃ ! DO NOT save your seed in online digital files.           ┃");
+  println!("┃                                                            ┃");
+  println!("┃ ! If you used a passphrase, memorize it.                   ┃");
+  println!("┃   Without it, you will lose access to your wallet.         ┃");
+  println!("┃                                                            ┃");
+  println!("┃ ! As soon as you generate your seed, write it down         ┃");
+  println!("┃   TEMPORARILY on a piece of paper and then use a           ┃");
+  println!("┃   Cold Wallet or Steel Wallet.                             ┃");
+  println!("┃                                                            ┃");
+  println!("┃ ! Finally, exit the program.                               ┃");
+  println!(
+    "{}",
+    style("┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛").red()
+  );
+
+  println!();
+
+  let confirmed = Confirm::with_theme(&dialoguer_theme("►"))
+    .with_prompt("I have read and understood all the recommendations above.")
+    .default(false)
+    .interact()?;
+
+  Ok(confirmed)
+}
+
+pub fn copyright_bottom() {
+  let line_size = 50;
+  println!("\n{}", "-".repeat(line_size));
+  println!(
+    "{}",
+    console::style(format!(
+      "{} © {} {} and collaborators.",
+      meta::PROJECT_NAME,
+      meta::COPYRIGHT_YEAR,
+      meta::PROJECT_MAINTAINER
+    ))
+    .bold(),
+  );
+  println!("{}", "-".repeat(line_size));
 }
 
 // NETWORK / SECURITY
@@ -77,7 +154,7 @@ pub fn ensure_offline() {
       )
       .yellow()
     );
-
+    copyright_bottom();
     std::process::exit(1);
   }
 }

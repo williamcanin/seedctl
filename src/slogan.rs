@@ -21,13 +21,19 @@ pub fn slogan() -> String {
   content.to_string()
 }
 
-pub fn banner(version: &str) -> String {
+pub fn program_name_banner(version: &str) -> String {
+  let mut version_text = format!("version: {}", version);
+
+  if version.is_empty() {
+    version_text = "".to_string();
+  }
+
   let content: String = format!(
     r#"
              ___             _  ___ _____ _
             / __| ___ ___ __| |/ __|_   _| |
             \__ \/ -_) -_) _` | (__  | | | |__
-            |___/\___\___\__,_|\___| |_| |____| version: {version}
+            |___/\___\___\__,_|\___| |_| |____| {version_text}
   "#
   );
   content

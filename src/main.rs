@@ -1,13 +1,14 @@
 // Author: William C. Canin <https://williamcanin.github.io>
 
+mod args;
+mod meta;
 mod slogan;
 mod utils;
-mod version;
 
 use bip39::Mnemonic;
-
-use console::{Color, style};
+use console::style;
 use dialoguer::{Confirm, Input, Select};
+use std::error::Error;
 
 use bitcoin::{
   Address, Network,
@@ -15,24 +16,35 @@ use bitcoin::{
   secp256k1::Secp256k1,
 };
 
-fn main() {
+fn main() -> Result<(), Box<dyn Error>> {
+  // FLAGS
+  match args::parse_args() {
+    args::CliAction::Version => {
+      args::print_version();
+      return Ok(());
+    }
+    args::CliAction::About => {
+      args::print_about();
+      return Ok(());
+    }
+    args::CliAction::Run => {}
+  }
+
   // SLOGAN
-  println!(
-    "{}{}\n{}\n{}{}\n",
-    style(slogan::slogan())
-      .bold()
-      .fg(Color::TrueColor(255, 165, 0)),
-    style(slogan::banner(version::VERSION)).bold().green(),
-    style("A deterministic, auditable, and security-focused Bitcoin wallet generator.").bold(),
-    style("Documentation: ").bold().yellow(),
-    style("https://github.com/williamcanin/seedctl/README.md").cyan()
-  );
+  utils::slogan(true, true);
 
   // SECURITY CHECK — MUST BE FIRST
   utils::ensure_offline();
 
-  // MNEMONIC SIZE
+  // SECURITY CARD — CONFIRM TO PROCEED
+  let confirmed = utils::show_important_card_with_confirm()?;
+  if !confirmed {
+    eprintln!("Error: User did not confirm reading the recommendations.");
+    utils::copyright_bottom();
+    std::process::exit(1);
+  }
 
+  // MNEMONIC SIZE
   let mnemonic_choice = Select::with_theme(&utils::dialoguer_theme("►"))
     .with_prompt("[ Mnemonic size (seed) ]")
     .items(["12 words (128 bits)", "24 words (256 bits)"])
@@ -50,7 +62,6 @@ fn main() {
   println!("{} {} bits\n", style("Selected entropy:").bold(), bits);
 
   // DICE MODE
-
   let dice_mode = Select::with_theme(&utils::dialoguer_theme("►"))
     .with_prompt("[ Dice (1-6) ]")
     .items(["Auto (random)", "Manual (inform sequence)"])
@@ -77,15 +88,8 @@ fn main() {
   };
 
   // VISUAL CONFIRMATION
-
   let dice_str: String = dice.iter().map(|d| char::from(b'0' + d)).collect();
-  println!(
-    "{} {}\n",
-    style(format!("DICE USED ({} numbers):", dice.len()))
-      .bold()
-      .yellow(),
-    dice_str
-  );
+  println!("{} {}\n", style("DICE USED:").bold().yellow(), dice_str);
 
   if !Confirm::with_theme(&utils::dialoguer_theme("►"))
     .with_prompt("Please confirm that the above information is correct.")
@@ -96,7 +100,6 @@ fn main() {
   }
 
   // NETWORK
-
   let network_choice = Select::with_theme(&utils::dialoguer_theme("►"))
     .with_prompt("Network")
     .items(["Mainnet", "Testnet"])
@@ -111,8 +114,7 @@ fn main() {
   };
 
   // PASSPHRASE
-
-  let passphrase_title = style("[Optional] Passphrase (enter = skip)")
+  let passphrase_title = style("[Optional] Passphrase (enter = empty)")
     .bold()
     .yellow()
     .to_string();
@@ -124,11 +126,9 @@ fn main() {
     .unwrap();
 
   // CRYPTO CORE (FIXED)
-
   let dice_entropy = utils::dice_hash(&dice);
-
   let final_entropy = match dice_mode {
-    // AUTO → HYBRID
+    // Auto → Hybrid
     0 => {
       let system_entropy = utils::generate_system_entropy(32);
       let combined = utils::combine_entropy(&dice_entropy, &system_entropy);
@@ -139,7 +139,7 @@ fn main() {
       utils::truncate_entropy(&combined, bits)
     }
 
-    // MANUAL → DETERMINISTIC
+    //  Manual → Deterministic
     1 => {
       println!(
         "{}",
@@ -163,8 +163,7 @@ fn main() {
   let acc_xprv = master.derive_priv(&secp, &path).unwrap();
   let acc_xpub = Xpub::from_priv(&secp, &acc_xprv);
 
-  // OUTPUT / Your wallet
-
+  // OUTPUT / YOUR WALLET
   println!(
     "\n\n{}\n",
     style(format!("Your wallet: {}", "-".repeat(46)))
@@ -216,5 +215,8 @@ fn main() {
 
   println!("\n{}\n", style("-".repeat(60)).bold().blue());
 
-  utils::finished();
+  utils::copyright_bottom();
+  utils::exit_confirm();
+
+  Ok(())
 }
