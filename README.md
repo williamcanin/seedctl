@@ -242,40 +242,30 @@ rustc --version
 
 ## Credits
 
-This project is based on well-established Bitcoin standards and the work of the open-source community, especially:
+This project is built upon well-established Bitcoin standards and the collective effort of the open-source community.
+
+### Author & Collaborators
+
+- **William C. Canin** — Creator & Maintainer
+- **[Your Name Here]** — Become a contributor! Submit a Pull Request or report an issue.
 
 ### Bitcoin Improvement Proposals (BIPs)
 
-- **BIP32** — Deterministic Hierarchical Wallets
-- **BIP39** — Mnemonic code for deterministic key generation
-- **BIP84** — Derivation scheme for native SegWit wallets
-
-These specifications define the basis for deterministic key generation and wallet interoperability.
+- **BIP32**: Hierarchical Deterministic Wallets.
+- **BIP39**: Mnemonic code for deterministic key generation.
+- **BIP84**: Derivation scheme for native SegWit wallets.
 
 ### Rust Ecosystem
 
-This project uses high-quality open-source Rust libraries, including:
+SeedCTL is built using high-quality open-source libraries from the Rust community. We stand on the shoulders of giants to ensure security and performance.
 
-- `bitcoin` — Bitcoin data structures, keys, and derivation
-- `bip39` — Mnemonic generation and validation
-- `secp256k1` (via `bitcoin`) — Elliptic curve cryptography
-- `dialoguer` — Secure and user-friendly interaction via command line
-- `console` — Terminal styling and output formatting
-- `rand` — Random number generation (using automatic entropy)
+You can find the full list of libraries and their versions in our [Cargo.toml](./Cargo.toml).
 
-All credits belong to the authors and maintainers of these libraries.
+Special thanks to the maintainers of `bitcoin`, `bip39`, and all other crates that make this project possible.
 
-### Community
+### Community Acknowledgments
 
-Special thanks to:
-
-- The developers and contributors of **Bitcoin Core**
-- The **Bitcoin open source community** in general
-- Researchers and developers who prioritize transparency, auditability, and user sovereignty
-
-### Author/Maintainer
-
-- **William C. Canin**
+Special thanks to the **Bitcoin Core** developers and the global open-source community for prioritizing transparency and user sovereignty.
 
 ---
 
@@ -287,6 +277,8 @@ https://github.com/williamcanin/donations
 [![Sponsor](https://img.shields.io/badge/Sponsor-GitHub-%23ea4aaa?style=for-the-badge)](
 https://github.com/sponsors/williamcanin
 )
+
+> You will appear in the collaborators section.
 
 ---
 

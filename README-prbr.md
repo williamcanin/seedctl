@@ -230,40 +230,32 @@ rustc --version
 
 ## Créditos
 
-Este projeto é baseado em padrões bem estabelecidos do Bitcoin e no trabalho da comunidade de código aberto, especialmente:
+Este projeto foi construído com base em padrões bem estabelecidos do Bitcoin e no esforço coletivo da comunidade de código aberto.
+
+### Autor e Colaboradores
+
+- **William C. Canin** — Criador e Mantenedor
+- **[Seu Nome Aqui]** — Torne-se um colaborador! Envie uma solicitação de pull request ou relate um problema.
 
 ### Propostas de Melhoria do Bitcoin (BIPs)
 
-- **BIP32** — Carteiras Hierárquicas Determinísticas
-- **BIP39** — Código mnemônico para geração de chaves determinísticas
-- **BIP84** — Esquema de derivação para carteiras SegWit nativas
+- **BIP32**: Carteiras Hierárquicas Determinísticas.
 
-Essas especificações definem a base para a geração de chaves determinísticas e a interoperabilidade de carteiras.
+- **BIP39**: Código mnemônico para geração de chaves determinísticas.
+
+- **BIP84**: Esquema de derivação para carteiras SegWit nativas.
 
 ### Ecossistema Rust
 
-Este projeto utiliza bibliotecas Rust de código aberto de alta qualidade, incluindo:
+O SeedCTL foi construído usando bibliotecas de código aberto de alta qualidade da comunidade Rust. Nos apoiamos nos ombros de gigantes para garantir segurança e desempenho.
 
-- `bitcoin` — Estruturas de dados, chaves e derivação do Bitcoin
-- `bip39` — Geração e validação de mnemônicos
-- `secp256k1` (via `bitcoin`) — Criptografia de curva elíptica
-- `dialoguer` — Interação segura e amigável via linha de comando
-- `console` — Estilização do terminal e formatação de saída
-- `rand` — Geração de números aleatórios (ao usar entropia automática)
+Você pode encontrar a lista completa de bibliotecas e suas versões em nosso [Cargo.toml](./Cargo.toml).
 
-Todos os créditos são dos autores e mantenedores dessas bibliotecas.
+Agradecimentos especiais aos mantenedores do `bitcoin`, `bip39` e de todos os outros crates que tornam este projeto possível.
 
-### Comunidade
+### Agradecimentos à Comunidade
 
-Agradecimentos especiais a:
-
-- Os desenvolvedores e colaboradores do **Bitcoin Core**
-- A **comunidade de código aberto do Bitcoin** em geral
-- Pesquisadores e desenvolvedores que priorizam a transparência, a auditabilidade e a soberania do usuário
-
-### Autor/Mantenedor
-
-- **William C. Canin**
+Agradecimentos especiais aos desenvolvedores do **Bitcoin Core** e à comunidade global de código aberto por priorizarem a transparência e a soberania do usuário.
 
 ---
 
@@ -275,6 +267,8 @@ https://github.com/williamcanin/donations
 [![Sponsor](https://img.shields.io/badge/Sponsor-GitHub-%23ea4aaa?style=for-the-badge)](
 https://github.com/sponsors/williamcanin
 )
+
+> Você aparecerá nos colaboradores.
 
 ---
 
