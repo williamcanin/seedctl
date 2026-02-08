@@ -1,0 +1,33 @@
+#!/bin/sh
+set -e
+
+HERE="$(dirname "$(readlink -f "$0")")"
+BIN="$HERE/usr/bin/seedctl"
+
+run_in_terminal() {
+    CMD="$1"
+
+    # x-terminal-emulator (Debian/Ubuntu)
+    if command -v x-terminal-emulator >/dev/null 2>&1; then
+        x-terminal-emulator -e "sh -c '$CMD; exec sh'"
+        exit 0
+    fi
+
+    # Terminais gráficos
+    for term in gnome-terminal konsole xfce4-terminal alacritty kitty xterm terminator; do
+        if command -v "$term" >/dev/null 2>&1; then
+            case "$term" in
+                gnome-terminal) "$term" -- sh -c "$CMD; exec sh"; exit 0 ;;
+                konsole) "$term" -e sh -c "$CMD; exec sh"; exit 0 ;;
+                xfce4-terminal) "$term" -e "sh -c '$CMD; exec sh'"; exit 0 ;;
+                alacritty|kitty|xterm|terminator) "$term" -e sh -c "$CMD; exec sh"; exit 0 ;;
+            esac
+        fi
+    done
+
+    # fallback no terminal atual
+    echo "No graphical terminal found. Running in the current terminal ..."
+    sh -c "$CMD; echo; read -p 'Press ENTER to exit ...'"
+}
+
+run_in_terminal "$BIN"
