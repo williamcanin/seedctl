@@ -1,5 +1,5 @@
 use crate::meta;
-
+use console::style;
 pub enum CliAction {
   Version,
   About,
@@ -31,10 +31,34 @@ pub fn print_version() {
 pub fn print_about() {
   crate::utils::slogan(false, false);
   println!();
-  println!("Version: {}", meta::VERSION);
-  println!("Commit: {}", meta::GIT_COMMIT);
-  println!("Build: {}", meta::BUILD_PROFILE);
-  println!("Maintainer: {}", meta::PROJECT_MAINTAINER);
-  println!("Repository (canonical): {}", meta::PROJECT_REPOSITORY);
-  println!("Documentation: {}/README.md", meta::PROJECT_REPOSITORY);
+  println!(
+    "{}",
+    style(format!("About: {}", "-".repeat(67))).cyan().bold()
+  );
+  println!("{}{}", style("- Version: ").bold().yellow(), meta::VERSION);
+  println!(
+    "{}{}",
+    style("- Commit: ").bold().yellow(),
+    meta::GIT_COMMIT
+  );
+  println!(
+    "{}{}",
+    style("- Build: ").bold().yellow(),
+    meta::BUILD_PROFILE
+  );
+  println!(
+    "{}{}",
+    style("- Maintainer: ").bold().yellow(),
+    meta::PROJECT_MAINTAINER
+  );
+  println!(
+    "{}{}",
+    style("- Repository: ").bold().yellow(),
+    meta::PROJECT_REPOSITORY
+  );
+  println!(
+    "{}{}/README.md",
+    style("- Documentation: ").bold().yellow(),
+    meta::PROJECT_REPOSITORY
+  );
 }
