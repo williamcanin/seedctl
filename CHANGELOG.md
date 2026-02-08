@@ -17,3 +17,5 @@
 - Run only in offline mode ([#1](https://github.com/williamcanin/seedctl/issues/1))
 - Security card added ([#2](https://github.com/williamcanin/seedctl/issues/2))
 - Feedback for Dice Manual option ([#3](https://github.com/williamcanin/seedctl/issues/3))
+- Adding subcommands: --version and --about
+- Code refactoring, improving on-screen information.
