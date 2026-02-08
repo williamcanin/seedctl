@@ -2,7 +2,7 @@
 name = "seedctl"
 description = "A deterministic, auditable, and security-focused Bitcoin wallet generator."
 repository = "https://github.com/williamcanin/seedctl"
-version = "0.1.2"
+version = "0.2.0"
 authors = ["William C. Canin <william.costa.canin@gmail.com>"]
 edition = "2024"
 
