@@ -4,6 +4,7 @@ version = "0.1.2"
 edition = "2024"
 
 [dependencies]
+anyhow = "1.0.101"
 bip39 = "2.2.2"
 bitcoin = "0.32.8"
 console = "0.16.2"
