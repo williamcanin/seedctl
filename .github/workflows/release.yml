@@ -46,17 +46,35 @@ jobs:
       - name: Build (release)
         run: cargo build --release
 
+      - name: Build AppImage (Linux)
+        if: runner.os == 'Linux'
+        run: |
+          sudo apt update
+          sudo apt install -y patchelf wget xz-utils file
+
+          # Download appimagetool
+          wget -O appimagetool.AppImage https://github.com/AppImage/AppImageKit/releases/download/continuous/appimagetool-x86_64.AppImage
+          chmod +x appimagetool.AppImage
+
+          # Prepare AppDir
+          cp -r .github/AppImage AppDir-build
+          mkdir -p AppDir-build/usr/bin
+          cp target/release/seedctl AppDir-build/usr/bin/seedctl
+
+          # Build AppImage
+          ./appimagetool.AppImage AppDir-build dist/seedctl-${{ steps.version.outputs.version }}-linux-x86_64.AppImage
+
       - name: Prepare artifacts (Linux)
         if: runner.os == 'Linux'
         run: |
           mkdir -p dist
-          cp target/release/seedctl dist/seedctl-v${{ steps.version.outputs.version }}-linux-x86_64
+          cp target/release/seedctl dist/seedctl-${{ steps.version.outputs.version }}-linux-x86_64
 
       - name: Prepare artifacts (Windows)
         if: runner.os == 'Windows'
         run: |
           mkdir -p dist
-          cp target/release/seedctl.exe dist/seedctl-v${{ steps.version.outputs.version }}-windows-x86_64.exe
+          cp target/release/seedctl.exe dist/seedctl-${{ steps.version.outputs.version }}-windows-x86_64.exe
 
       - name: Upload artifacts
         uses: actions/upload-artifact@v4
