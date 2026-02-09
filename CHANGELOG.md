@@ -20,3 +20,5 @@
 - Adding subcommands: --version and --about
 - Code refactoring, improving on-screen information.
 - Adding an AppImage executable for Linux
+- Print Fingerprint
+- Option of: Native SegWit (BIP84), Nested SegWit (BIP49) and Legacy (BIP44)
