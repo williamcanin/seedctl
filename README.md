@@ -12,7 +12,7 @@
 
 🇧🇷 [**Ler em Português**](README-ptbr.md)
 
-**SeedCTL** is a **deterministic, auditable, and security-focused** Bitcoin wallet generator, written in [**Rust**](https://rust-lang.org/).
+**SeedCTL** is a **deterministic, auditable, and security-focused** Bitcoin wallet generator, written in [**Rust**](https://rust-lang.org/) for **offline** mode.
 
 This program allows you to generate a Bitcoin wallet from **physical data (data/dice) 🎲** and/or **system entropy**, producing:
 

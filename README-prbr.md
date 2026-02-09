@@ -12,7 +12,7 @@
 
 🇺🇸 [**Read in English**](README-en.md)
 
-**SeedCTL** é um gerador de carteiras Bitcoin **determinístico, auditável e focado em segurança**, escrito em [**Rust**](https://rust-lang.org/).
+**SeedCTL** é um gerador de carteiras Bitcoin **determinístico, auditável e focado em segurança**, escrito em [**Rust**](https://rust-lang.org/) para modo **offline**.
 
 Este programa permite gerar uma carteira Bitcoin a partir de **dados físicos (dado/dice) 🎲** e/ou **entropia do sistema**, produzindo:
 
