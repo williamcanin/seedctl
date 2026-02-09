@@ -2,7 +2,6 @@
   "recommendations": [
     "rust-lang.rust-analyzer",
     "vadimcn.vscode-lldb",
-    "serayuzgur.crates",
     "tamasfe.even-better-toml",
     "fill-labs.dependi",
     "llvm-vs-code-extensions.lldb-dap",
