@@ -22,3 +22,4 @@
 - Adding an AppImage executable for Linux
 - Print Fingerprint
 - Option of: Native SegWit (BIP84), Nested SegWit (BIP49) and Legacy (BIP44)
+- Adding option to export watch-only wallet
