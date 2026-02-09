@@ -9,7 +9,7 @@ mod utils;
 use bip39::Mnemonic;
 use console::style;
 use dialoguer::{Confirm, Input, Select};
-use std::error::Error;
+use std::{error::Error, fs};
 
 use bitcoin::{
   Address, Network,
@@ -344,10 +344,24 @@ fn main() -> Result<(), Box<dyn Error>> {
 
   let json = to_string_pretty(&export).unwrap();
 
-  println!("\n{}", style("Export JSON:").bold());
-  println!("{}", json);
+  // println!("\n{}", style("Export JSON:").bold());
+  // println!("{}", json);
 
   println!("\n{}\n", style("-".repeat(60)).bold().blue());
+
+  // EXPORT WATCH ONLY
+  let export_watch_only = Select::with_theme(&utils::dialoguer_theme("►"))
+    .with_prompt("Export watch-only wallet?")
+    .items(["Yes (xpub + fingerprint + path)", "No"])
+    .default(0)
+    .interact()
+    .unwrap();
+
+  match export_watch_only {
+    0 => fs::write(format!("wallet-{}-watch-only.json", fingerprint), json)?,
+    1 => println!(),
+    _ => unreachable!(),
+  };
 
   utils::copyright_bottom();
   utils::exit_confirm();
