@@ -1,7 +1,9 @@
 use bitcoin::{
   base58,
   bip32::{Xpriv, Xpub},
+  hashes::{Hash, sha256d},
 };
+
 use crossterm::{
   event::{Event, KeyCode, read},
   execute,
@@ -238,6 +240,25 @@ pub fn combine_entropy(a: &[u8], b: &[u8]) -> Vec<u8> {
   hasher.finalize().to_vec()
 }
 
+pub fn format_key_origin(fingerprint: [u8; 4], purpose: u32, coin_type: u32) -> String {
+  format!(
+    "[{:02x}{:02x}{:02x}{:02x}/{}h/{}h/0h]",
+    fingerprint[0], fingerprint[1], fingerprint[2], fingerprint[3], purpose, coin_type
+  )
+}
+
+pub fn output_descriptor(purpose: u32, key_origin: &str, xpub: &str, chain: u32) -> String {
+  match purpose {
+    // BIP84
+    84 => format!("wpkh({}{}/{chain}/*)", key_origin, xpub),
+    // BIP49
+    49 => format!("sh(wpkh({}{}/{chain}/*))", key_origin, xpub),
+    // BIP44
+    44 => format!("pkh({}{}/{chain}/*)", key_origin, xpub),
+    _ => unreachable!(),
+  }
+}
+
 pub fn truncate_entropy(entropy: &[u8], bits: usize) -> Vec<u8> {
   entropy[..bits / 8].to_vec()
 }
@@ -263,4 +284,33 @@ pub fn xpub_to_zpub(xpub: &Xpub) -> String {
   let mut data = xpub.encode();
   data[0..4].copy_from_slice(&[0x04, 0xB2, 0x47, 0x46]);
   base58::encode_check(&data)
+}
+
+pub fn xprv_to_yprv(xprv: &Xpriv) -> String {
+  let mut data = xprv.encode();
+  // yprv prefix
+  data[0..4].copy_from_slice(&[0x04, 0x9D, 0x78, 0x78]);
+  base58::encode_check(&data)
+}
+
+/// Converte xpub → ypub / zpub (SLIP-132)
+pub fn convert_xpub_prefix(xpub: &Xpub, version: u32) -> String {
+  // Decode Base58Check
+  let mut data = base58::decode_check(&xpub.to_string()).expect("Invalid Base58Check xpub");
+
+  // Substitui version bytes
+  data[0..4].copy_from_slice(&version.to_be_bytes());
+
+  // Recalcula checksum
+  let checksum = sha256d::Hash::hash(&data[..data.len() - 4]);
+
+  let len = data.len();
+  data[len - 4..len].copy_from_slice(&checksum[..4]);
+
+  // Encode Base58Check
+  base58::encode_check(&data)
+}
+
+pub fn xpub_to_ypub(xpub: &Xpub) -> String {
+  convert_xpub_prefix(xpub, 0x049d7cb2) // ypub
 }
